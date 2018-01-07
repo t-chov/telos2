@@ -9,6 +9,13 @@
         (login as {{ email }})
         </p>
       </div>
+      <div class="navbar-item navbar-end">
+        <div class="field">
+          <p class="control">
+            <router-link to="/signout" class="button">Sign out</router-link>
+          </p>
+        </div>
+      </div>
     </nav>
   </div>
 </template>

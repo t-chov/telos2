@@ -1,14 +1,14 @@
 <template>
-  <div class="signin">
+  <div class="signup">
     <my-navbar></my-navbar>
     <div class="columns">
       <div class="column is-half is-offset-one-quarter">
-        <section class="hero is-primary">
+        <section class="hero is-success">
           <div class="hero-body">
             <div class="container">
-              <h1 class="title">Sign In</h1>
+              <h1 class="title">Sign Up</h1>
               <h2 class="subtitle">
-                No account? -> <u><router-link to="/signup">Sign up.</router-link></u>
+                Already have account? -> <u><router-link to="/signin">Sign in.</router-link></u>
               </h2>
             </div>
           </div>
@@ -17,7 +17,7 @@
           <article class="message is-danger" v-if="errorMessage != ''">
             <div class="message-body">{{ errorMessage }}</div>
           </article>
-          <form v-on:submit.prevent="onSignIn">
+          <form v-on:submit.prevent="onSignUp">
             <!-- Email -->
             <div class="field">
               <p class="control has-icons-left has-icons-right">
@@ -42,7 +42,7 @@
             <!-- Buttons -->
             <div class="field is-grouped">
               <p class="control">
-                <input type="submit" class="button is-primary" value="Sign in">
+                <input type="submit" class="button is-success" value="Sign up">
               </p>
               <p class="control">
                 <input type="reset" class="button" value="Reset">
@@ -75,8 +75,8 @@ export default {
     'my-navbar': Navbar,
   },
   methods: {
-    onSignIn() {
-      firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
+    onSignUp() {
+      firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
         // eslint-disable-next-line
         (user) => {
           this.$router.push('/');
@@ -89,3 +89,4 @@ export default {
   },
 };
 </script>
+
