@@ -1,13 +1,6 @@
 <template>
   <div class="signin">
-    <!-- Navbar のちのち単一Component化 -->
-    <nav class="navbar" role="navigation" aria-label="navigation">
-      <div class="navbar-brand">
-        <router-link to="/" class="navbar-item is-large">
-          Telos2
-        </router-link>
-      </div>
-    </nav>
+    <my-navbar></my-navbar>
     <div class="columns">
       <div class="column is-half is-offset-one-quarter">
         <section class="hero is-dark">
@@ -21,11 +14,14 @@
           </div>
         </section>
         <section class="section">
+          <article class="message is-danger" v-if="errorMessage != ''">
+            <div class="message-body">{{ errorMessage }}</div>
+          </article>
           <form v-on:submit.prevent="onSignIn">
             <!-- Email -->
             <div class="field">
               <p class="control has-icons-left has-icons-right">
-                <input class="input" type="email" name="email" placeholder="Email">
+                <input class="input" type="email" name="email" placeholder="Email" v-model="email">
                 <span class="icon is-small is-left">
                   <i class="fa fa-envelope"></i>
                 </span>
@@ -37,7 +33,7 @@
             <!-- Password -->
             <div class="field">
               <p class="control has-icons-left">
-                <input class="input" type="password" placeholder="Password">
+                <input class="input" type="password" placeholder="Password" v-model="password">
                 <span class="icon is-small is-left">
                   <i class="fa fa-lock"></i>
                 </span>
@@ -63,11 +59,32 @@
 </template>
 
 <script>
+import firebase from 'firebase';
+import Navbar from './Navbar';
+
 export default {
   name: 'SignIn',
+  data() {
+    return {
+      errorMessage: '',
+      email: '',
+      password: '',
+    };
+  },
+  components: {
+    'my-navbar': Navbar,
+  },
   methods: {
     onSignIn() {
-      console.log('SignIn');
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
+        // eslint-disable-next-line
+        (user) => {
+          this.$router.push('/');
+        },
+        (err) => {
+          this.errorMessage = err.message;
+        },
+      );
     },
   },
 };
